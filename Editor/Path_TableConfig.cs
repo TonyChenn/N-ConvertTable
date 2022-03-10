@@ -1,6 +1,4 @@
-﻿using SettingKit;
-using SettingKit.Editor;
-using SFramework.Editor;
+﻿using SFramework.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,14 +8,14 @@ namespace Table.Editor
     {
         #region 设置上的字段菜单
 
-        [Setting(FieldType.Folder,"Excel 目录: ")]
+        [SettingProperty(FieldType.Folder,"Excel 目录: ")]
         public static string ExcelFolder
         {
             get { return EditorPrefsHelper.GetString("Path_TableConfig_ExcelFolder", Application.dataPath); }
             set => EditorPrefsHelper.SetString("Path_TableConfig_ExcelFolder", value);
         }
 
-        [Setting(FieldType.Folder,"Gen Asset目录: ")]
+        [SettingProperty(FieldType.Folder,"Gen Asset目录: ")]
         public static string GenAssetFolder
         {
             get
@@ -28,7 +26,7 @@ namespace Table.Editor
             set => EditorPrefsHelper.SetString("Path_TableConfig_GenAssetFolder", value);
         }
         
-        [Setting(FieldType.Folder,"Gen CSharp目录: ")]
+        [SettingProperty(FieldType.Folder,"Gen CSharp目录: ")]
         public static string GenCSharpFolder
         {
             get

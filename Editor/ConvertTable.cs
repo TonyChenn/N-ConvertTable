@@ -5,7 +5,6 @@ using UnityEngine;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
-using SettingKit.Editor;
 using Table.Editor;
 
 public class ConvertTable
