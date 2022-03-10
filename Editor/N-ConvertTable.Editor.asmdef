@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "N-Core.Editor",
-        "N-Setting.Editor"
+        "N-Setting.Editor",
+        "N-Setting"
     ],
     "includePlatforms": [
         "Editor"

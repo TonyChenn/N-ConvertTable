@@ -1,4 +1,4 @@
-﻿using SFramework.Editor;
+﻿using NCore.Editor;
 using UnityEditor;
 using UnityEngine;
 
