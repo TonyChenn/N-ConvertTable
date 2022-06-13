@@ -1,4 +1,4 @@
-﻿using NCore.Editor;
+using NCore.Editor;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-﻿using System.CodeDom;
+using System.CodeDom;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -33,7 +33,7 @@ public class ConvertTable
         {
             if (EditorUtility.DisplayDialog("提示", "配表路径有问题，请检查！！", "这就去"))
             {
-                EditorWindow.GetWindow<SettingWnd>();
+                PackageWnd.ShowWnd("2.设置");
             }
         }
     }

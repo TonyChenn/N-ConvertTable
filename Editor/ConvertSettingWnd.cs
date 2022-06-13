@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Table.Editor;
@@ -47,10 +46,7 @@ public class ConvertSettingWnd : EditorWindow
 
         if (GUILayout.Button("打开设置",GUILayout.Width(90)))
         {
-            // TODO 这里传递字符不合理，但是Path_TableConfig的GetModuleName() 不是静态方法 待解决
-            // 实例化个对象也不科学
-            
-            SettingWnd.ShowWindow("导表配置");
+            PackageWnd.ShowWnd("2.设置", "导表配置");
         }
         EditorGUILayout.EndHorizontal();
 
