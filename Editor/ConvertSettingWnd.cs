@@ -46,7 +46,7 @@ public class ConvertSettingWnd : EditorWindow
 
         if (GUILayout.Button("打开设置",GUILayout.Width(90)))
         {
-            PackageWnd.ShowWnd("2.设置", "导表配置");
+            PackageWnd.ShowWnd("2.设置", Path_TableConfig.TAG);
         }
         EditorGUILayout.EndHorizontal();
 
@@ -158,7 +158,8 @@ public class ConvertSettingWnd : EditorWindow
     }
     void ConvertToAsset(SettingItem item, ExcelData excelData)
     {
-        Assembly assembly = Assembly.Load("Assembly-CSharp");
+        string assemblyName = Path_TableConfig.TableSharpAssemblyName;
+        Assembly assembly = Assembly.Load(assemblyName);
         Type dbType = assembly.GetType(item.ConfigClassName);
         if (dbType == null)
         {
