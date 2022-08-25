@@ -96,6 +96,7 @@ public class ConvertTable
         builder.Append(String_Config_Template);
         builder.Replace("{FILE_NAME}", excelData.tableName);
         builder.Replace("{ITEM_CLASS_VARIABLE}", sb.ToString());
+        builder.Replace("{ASSET_PATH}", Path_TableConfig.GenAssetFolder.Replace(Application.dataPath, ""));
         string result = builder.ToString();
         
         return result;
@@ -109,6 +110,7 @@ public class ConvertTable
 /// </summary>
 using System;
 using UnityEngine;
+using NCore;
 
 [Serializable]
 public partial class Item_{FILE_NAME}
@@ -132,7 +134,7 @@ public partial class Config_{FILE_NAME} : ScriptableObject
     static void Init()
     {
 #if UNITY_EDITOR
-        if (GameConfig.Singlton.UseLocalAsset)
+        if (GameConfig.UseLocalAsset)
             LoadFromLocal();
         else
             LoadFromBundle();
@@ -143,17 +145,17 @@ public partial class Config_{FILE_NAME} : ScriptableObject
 
     static void LoadFromBundle()
     {
-        var item = new NormalAssetItem(""/Table/{FILE_NAME}.u"");
-        item.Load(() =>
-        {
-            Singleton = item.AssetObj as Config_{FILE_NAME};
-        });
+        //var item = new NormalAssetItem(""/Table/{FILE_NAME}.u"");
+        //item.Load(() =>
+        //{
+        //    Singleton = item.AssetObj as Config_{FILE_NAME};
+        //});
     }
 
 #if UNITY_EDITOR
     static void LoadFromLocal()
 {
-    string path = ""Assets/Asset/Table/{FILE_NAME}.asset"";
+    string path = ""Assets{ASSET_PATH}/{FILE_NAME}.asset"";
     var obj = UnityEditor.AssetDatabase.LoadAssetAtPath<Config_{FILE_NAME}>(path);
     _instence = obj;
 }
