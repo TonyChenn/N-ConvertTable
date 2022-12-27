@@ -51,6 +51,12 @@ namespace Table.Editor
             }
             set => EditorPrefsHelper.SetString("Path_TableConfig_GenCSharpAssemblyName", value);
         }
+
+        [SettingMethod("", "打开导表工具")]
+        public static void OpenConvertTableTool()
+        {
+            ConvertSettingWnd.SettingConvertExcel();
+        }
         #endregion
 
         #region IPathConfig,IEditorPrefs
