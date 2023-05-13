@@ -69,9 +69,9 @@ namespace Table.Editor
 
         public void ReleaseEditorPrefs()
         {
-            EditorPrefs.DeleteKey("Path_TableConfig_ExcelFolder");
-            EditorPrefs.DeleteKey("Path_TableConfig_GenAssetFolder");
-            EditorPrefs.DeleteKey("Path_TableConfig_GenCSharpFolder");
+            EditorPrefsHelper.DeleteKey("Path_TableConfig_ExcelFolder");
+            EditorPrefsHelper.DeleteKey("Path_TableConfig_GenAssetFolder");
+            EditorPrefsHelper.DeleteKey("Path_TableConfig_GenCSharpFolder");
         }
 
         #endregion
