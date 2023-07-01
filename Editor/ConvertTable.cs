@@ -1,11 +1,9 @@
-using System.CodeDom;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
 using System.Diagnostics;
 using System.Text;
-using Table.Editor;
 
 public class ConvertTable
 {
@@ -83,6 +81,7 @@ public class ConvertTable
                 case "bool"     : sb.Append("bool ");   break;
                 case "int"      :
                 case "int32"    : sb.Append("int ");    break;
+				case "uint"		:
                 case "uint32"   : sb.Append("uint ");   break;
                 case "int64"    :
                 case "long"     : sb.Append("long ");   break;
@@ -107,10 +106,11 @@ public class ConvertTable
     /// </summary>
     public const string String_Config_Template = @"/// <summary>
 /// 本文件中的代码为生成的代码，不允许手动修改
+/// Generate by TonyChenn @
 /// </summary>
+
 using System;
 using UnityEngine;
-using NCore;
 
 [Serializable]
 public partial class Item_{FILE_NAME}
@@ -131,10 +131,10 @@ public partial class Config_{FILE_NAME} : ScriptableObject
         }
     }
 
-    static void Init()
+    private static void Init()
     {
 #if UNITY_EDITOR
-        if (GameConfig.UseLocalAsset)
+        if (GameConfig.UseLocalScript)
             LoadFromLocal();
         else
             LoadFromBundle();
@@ -143,22 +143,28 @@ public partial class Config_{FILE_NAME} : ScriptableObject
 #endif
     }
 
-    static void LoadFromBundle()
+    private static void LoadFromBundle()
     {
-        //var item = new NormalAssetItem(""/Table/{FILE_NAME}.u"");
-        //item.Load(() =>
-        //{
-        //    Singleton = item.AssetObj as Config_{FILE_NAME};
-        //});
+		string path = $""{Application.streamingAssetsPath}/asset/table/{FILE_NAME}.u"";
+		if(GameConfig.PlayMode == PlayMode.HostMode)
+		{
+			string temp = $""{Application.persistentDataPath}/asset/table/{FILE_NAME}.u"";
+			if (System.IO.File.Exists(temp))
+			{
+				path = temp;
+			}
+		}
+		AssetBundle bundle = AssetBundle.LoadFromFile(path);
+		_instence = bundle.LoadAsset<Config_{FILE_NAME}>(""asset/table/{FILE_NAME}.u"");
     }
 
 #if UNITY_EDITOR
-    static void LoadFromLocal()
-{
-    string path = ""Assets{ASSET_PATH}/{FILE_NAME}.asset"";
-    var obj = UnityEditor.AssetDatabase.LoadAssetAtPath<Config_{FILE_NAME}>(path);
-    _instence = obj;
-}
+    private static void LoadFromLocal()
+	{
+		string path = ""Assets{ASSET_PATH}/{FILE_NAME}.asset"";
+		var obj = UnityEditor.AssetDatabase.LoadAssetAtPath<Config_{FILE_NAME}>(path);
+		_instence = obj;
+	}
 #endif
 }";
 }

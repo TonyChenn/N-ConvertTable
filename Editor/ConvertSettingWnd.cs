@@ -4,19 +4,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Table.Editor;
 using UnityEditor;
 using UnityEngine;
 
 public class ConvertSettingWnd : EditorWindow
 {
-    public const string SettingFilePath = "/NextFramework/Modules/Table/Editor/setting.csv";
 
     List<SettingItem> settingItemList;
     Vector2 scrollPos;
-    string csvConfigPath;
     GUIStyle TitleStyle;
-    GUIStyle GreenButtonStyle;
+
+	GUIStyle InfoStyle;
 
     [MenuItem("Tools/转表工具 &c")]
     public static void SettingConvertExcel()
@@ -26,14 +24,14 @@ public class ConvertSettingWnd : EditorWindow
 
     private void Awake()
     {
-        csvConfigPath = Application.dataPath + SettingFilePath;
-        
         TitleStyle = new GUIStyle();
         TitleStyle.normal.textColor=Color.red;
         TitleStyle.fontStyle = FontStyle.Bold;
+		TitleStyle.fontSize = 15;
 
-        GreenButtonStyle = new GUIStyle();
-        GreenButtonStyle.normal.textColor=Color.green;
+		InfoStyle = new GUIStyle();
+		InfoStyle.fontSize = 14;
+		InfoStyle.normal.textColor = Color.white;
     }
     private void OnGUI()
     {
@@ -50,13 +48,10 @@ public class ConvertSettingWnd : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        bool allToAsset = false;
-
         GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("选择", TitleStyle, GUILayout.Width(40));
         GUILayout.Label("配表名称", TitleStyle, GUILayout.Width(249));
-        GUILayout.Label("To Asset", TitleStyle, GUILayout.Width(80));
         EditorGUILayout.EndHorizontal();
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
@@ -69,9 +64,7 @@ public class ConvertSettingWnd : EditorWindow
 
             GUILayout.BeginHorizontal();
             item.Selected = GUILayout.Toggle(item.Selected, "", GUILayout.Width(40));
-            GUILayout.Label(item.Name, GUILayout.Width(249));
-            item.ToAsset = GUILayout.Toggle(item.ToAsset, "", GUILayout.Width(80));
-            if (allToAsset) item.ToAsset = true;
+            GUILayout.Label(item.Name, InfoStyle, GUILayout.Width(249));
             GUILayout.EndHorizontal();
         }
         EditorGUILayout.EndScrollView();
@@ -101,11 +94,12 @@ public class ConvertSettingWnd : EditorWindow
         if (GUILayout.Button("导入选中数据", GUILayout.Height(50)))
         {
             var list = new List<SettingItem>();
-            foreach (var item in settingItemList)
-            {
-                if (item.Selected && item.ToAsset)
+			settingItemList.ForEach((item) =>
+			{
+                if (item.Selected)
                     list.Add(item);
-            }
+			});
+
             if (list.Count > 0)
             {
                 ImportData(list);
@@ -115,13 +109,7 @@ public class ConvertSettingWnd : EditorWindow
         }
         if (GUILayout.Button("导入所有数据", GUILayout.Height(50)))
         {
-            var list = new List<SettingItem>();
-            foreach (var item in settingItemList)
-            {
-                if (item.ToAsset)
-                    list.Add(item);
-            }
-            ImportData(list);
+            ImportData(settingItemList);
         }
         EditorGUILayout.EndHorizontal();
     }
@@ -146,14 +134,10 @@ public class ConvertSettingWnd : EditorWindow
     {
         if (list == null || list.Count == 0) return;
 
-        ExcelData data = null;
         for (int i = 0; i < list.Count; i++)
         {
-            data = ConvertTable.GetTableData(list[i]);
+            var data = ConvertTable.GetTableData(list[i]);
             ConvertToAsset(list[i], data);
-            //Type type = Type.GetType("Item_" + data.tableName);
-            //var config = ScriptableObject.CreateInstance(type);
-            //config.
         }
     }
     void ConvertToAsset(SettingItem item, ExcelData excelData)
@@ -341,7 +325,6 @@ public class ConvertSettingWnd : EditorWindow
 public class SettingItem
 {
     public string Name;
-    public bool ToAsset;
     public bool Selected = false;   //only for single ExcelToSharp or load single Excel Data; (default:false)
 
 
@@ -358,9 +341,5 @@ public class SettingItem
             throw new ArgumentException("name is null");
 
         this.Name = name;
-    }
-    public SettingItem(string folder, string name, bool toAsset) : this(folder, name)
-    {
-        ToAsset = toAsset;
     }
 }
