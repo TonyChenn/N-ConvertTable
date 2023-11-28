@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -142,7 +143,7 @@ public class ConvertSettingWnd : EditorWindow
     private void ConvertToAsset(SettingItem item, ExcelData excelData)
     {
         string assemblyName = Path_TableConfig.TableSharpAssemblyName;
-        var assembly = System.Reflection.Assembly.Load(assemblyName);
+        var assembly = Assembly.Load(assemblyName);
         Type dbType = assembly.GetType(item.ConfigClassName);
         if (dbType == null)
         {
