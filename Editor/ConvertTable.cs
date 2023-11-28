@@ -134,7 +134,7 @@ public partial class Config_{FILE_NAME} : ScriptableObject
     private static void Init()
     {
 #if UNITY_EDITOR
-        if (GameConfig.PlayMode == PlayMode.DevMode)
+        if (GameConfig.UseLocalAsset)
             LoadFromLocal();
         else
             LoadFromBundle();

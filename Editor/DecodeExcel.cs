@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+using NDebug;
+using OfficeOpenXml;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,7 +18,7 @@ public class DecodeExcel
     /// <param name="_valueList">数据</param>
     public ExcelData Decode(string filePath)
     {
-        UnityEngine.Debug.Log("----->" + filePath);
+        Log.Info("----->" + filePath);
         if (File.Exists(filePath))
         {
             FileInfo file = new FileInfo(filePath);
