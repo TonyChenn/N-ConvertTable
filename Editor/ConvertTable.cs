@@ -7,7 +7,6 @@ using System.Text;
 
 public class ConvertTable
 {
-
     public static void GenCSharp(List<SettingItem> list)
     {
         if (Directory.Exists(Path_TableConfig.ExcelFolder))

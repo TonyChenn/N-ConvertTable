@@ -1,5 +1,4 @@
 using NCore.Editor;
-using UnityEditor;
 using UnityEngine;
 
 public class Path_TableConfig : IPathConfig, IEditorPrefs

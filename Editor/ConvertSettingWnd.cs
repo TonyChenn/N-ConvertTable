@@ -3,19 +3,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
 
 public class ConvertSettingWnd : EditorWindow
 {
+    private List<SettingItem> settingItemList;
+	private Vector2 scrollPos;
+	private GUIStyle titleStyle;
 
-    List<SettingItem> settingItemList;
-    Vector2 scrollPos;
-    GUIStyle TitleStyle;
-
-	GUIStyle InfoStyle;
+	private GUIStyle infoStyle;
 
     [MenuItem("Tools/转表工具 &c")]
     public static void SettingConvertExcel()
@@ -25,14 +23,14 @@ public class ConvertSettingWnd : EditorWindow
 
     private void Awake()
     {
-        TitleStyle = new GUIStyle();
-        TitleStyle.normal.textColor=Color.red;
-        TitleStyle.fontStyle = FontStyle.Bold;
-		TitleStyle.fontSize = 15;
+        titleStyle = new GUIStyle();
+        titleStyle.normal.textColor=Color.red;
+        titleStyle.fontStyle = FontStyle.Bold;
+		titleStyle.fontSize = 15;
 
-		InfoStyle = new GUIStyle();
-		InfoStyle.fontSize = 14;
-		InfoStyle.normal.textColor = Color.white;
+		infoStyle = new GUIStyle();
+		infoStyle.fontSize = 14;
+		infoStyle.normal.textColor = Color.white;
     }
     private void OnGUI()
     {
@@ -51,8 +49,8 @@ public class ConvertSettingWnd : EditorWindow
 
         GUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
-        GUILayout.Label("选择", TitleStyle, GUILayout.Width(40));
-        GUILayout.Label("配表名称", TitleStyle, GUILayout.Width(249));
+        GUILayout.Label("选择", titleStyle, GUILayout.Width(40));
+        GUILayout.Label("配表名称", titleStyle, GUILayout.Width(249));
         EditorGUILayout.EndHorizontal();
 
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
@@ -65,7 +63,7 @@ public class ConvertSettingWnd : EditorWindow
 
             GUILayout.BeginHorizontal();
             item.Selected = GUILayout.Toggle(item.Selected, "", GUILayout.Width(40));
-            GUILayout.Label(item.Name, InfoStyle, GUILayout.Width(249));
+            GUILayout.Label(item.Name, infoStyle, GUILayout.Width(249));
             GUILayout.EndHorizontal();
         }
         EditorGUILayout.EndScrollView();
@@ -131,7 +129,7 @@ public class ConvertSettingWnd : EditorWindow
     }
 
     #region Write ScriptableObject and import Data
-    void ImportData(List<SettingItem> list)
+    private void ImportData(List<SettingItem> list)
     {
         if (list == null || list.Count == 0) return;
 
@@ -141,10 +139,10 @@ public class ConvertSettingWnd : EditorWindow
             ConvertToAsset(list[i], data);
         }
     }
-    void ConvertToAsset(SettingItem item, ExcelData excelData)
+    private void ConvertToAsset(SettingItem item, ExcelData excelData)
     {
         string assemblyName = Path_TableConfig.TableSharpAssemblyName;
-        Assembly assembly = Assembly.Load(assemblyName);
+        var assembly = System.Reflection.Assembly.Load(assemblyName);
         Type dbType = assembly.GetType(item.ConfigClassName);
         if (dbType == null)
         {
