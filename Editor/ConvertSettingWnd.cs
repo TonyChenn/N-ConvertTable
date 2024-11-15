@@ -1,4 +1,3 @@
-using NDebug;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -147,7 +146,7 @@ public class ConvertSettingWnd : EditorWindow
         Type dbType = assembly.GetType(item.ConfigClassName);
         if (dbType == null)
         {
-			Log.Error("找不到" + item.ConfigClassName + "类");
+			Debug.LogError("找不到" + item.ConfigClassName + "类");
             return;
         }
 
@@ -191,7 +190,7 @@ public class ConvertSettingWnd : EditorWindow
                 var field = itemType.GetField(fieldList[j]);
                 if (field == null)
                 {
-					Log.Error(string.Format("找不到{0}类中{1}属性", item.ItemClassName, fieldList[j]));
+					Debug.LogError(string.Format("找不到{0}类中{1}属性", item.ItemClassName, fieldList[j]));
                     return;
                 }
                 object valueObj = GetCSharpValue(line[j], field.FieldType);
